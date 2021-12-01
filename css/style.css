@@ -366,6 +366,7 @@ button {
     line-height: 32px;
 }
 
+
 .price {
     margin-right: 10px;
 }
@@ -381,6 +382,9 @@ button {
     overflow: hidden;
     white-space: nowrap;
     max-width: 150px;
+}
+.category__address {
+    max-width: 350px;
 }
 
 .price:after {

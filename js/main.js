@@ -173,29 +173,28 @@ function checkAuth() {
 
 function createCardRestaurant({
                                   id, image, kitchen, name, price, stars,
-                                  products, timeOfDelivery: timeOfDelivery
+                                  products, address, timeOfDelivery: timeOfDelivery
                               }) {
 
     const card = document.createElement("a");
     card.className = "card card-restaurant";
     card.products = products;
     card.id = id;
-    card.info = [name, price, stars, kitchen];
+    card.info = [name, price, stars, kitchen,address];
 
     card.insertAdjacentHTML("beforeend", `
 		<img src="cafeterias\\${image}" alt="${name}" class="card-image"/>
 		<div class="card-text">
 			<div class="card-heading">
 				<h3 class="card-title">${name}</h3>
-				<span class="card-tag tag">${timeOfDelivery} мин</span>
+<!--				<span class="card-tag tag">${timeOfDelivery} мин</span>-->
 			</div>
 			<div class="card-info">
-				<div class="rating">
-					${stars}
-				</div>
+<!--				<div class="rating">${stars}</div>-->
 <!--				<div class="price">От ${price} ₽</div>-->
-				<div class="price">От ${price}</div>
+<!--				<div class="price">От ${price}</div>-->
 				<div class="category">${kitchen}</div>
+				<div class="category category__address">${address}</div>
 			</div>
 		</div>
 	`);
@@ -241,7 +240,7 @@ function openGoods(event) {
 
         if (restaurant) {
 
-            const [name, price, stars, kitchen] = restaurant.info;
+            const [name, price, stars, kitchen, address] = restaurant.info;
 
             returnRestaurants();
 
