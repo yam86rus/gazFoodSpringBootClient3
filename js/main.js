@@ -1,12 +1,12 @@
 'use strict';
 
-// const urlCafeterias = 'http://169.168.9.81:8077/api/cafeterias';
-// const urlDishes = 'http://169.168.9.81:8077/api/trololo/';
-// const urlOrders = 'http://169.168.9.81:8077/api/orders';
+const urlCafeterias = 'http://127.0.0.1:8077/api/cafeterias';
+const urlDishes = 'http://127.0.0.1:8077/api/trololo/';
+const urlOrders = 'http://127.0.0.1:8077/api/orders';
 
-const urlCafeterias = 'http://193.222.191.190:8077/api/cafeterias';
-const urlDishes = 'http://193.222.191.190:8077/api/trololo/';
-const urlOrders = 'http://193.222.191.190:8077/api/orders';
+// const urlCafeterias = 'http://193.222.191.190:8077/api/cafeterias';
+// const urlDishes = 'http://193.222.191.190:8077/api/trololo/';
+// const urlOrders = 'http://193.222.191.190:8077/api/orders';
 
 const cartButton = document.querySelector("#cart-button"),
     modal = document.querySelector(".modal"),
@@ -202,7 +202,7 @@ function createCardRestaurant({
 }
 
 
-function createCardGood({description, image, name, price, id, cafeteriaId}) {
+function createCardGood({description, image, name, price, id, cafeteriaId,weight}) {
     const card = document.createElement("div");
     card.className = "card";
 
@@ -216,6 +216,7 @@ function createCardGood({description, image, name, price, id, cafeteriaId}) {
 				<div class="ingredients">${description}</div>
 				<div style="display: none" class="card-cafeteriaId">${cafeteriaId}</div>
 			</div>
+				<div class="ingredients">Вес: ${weight} гр.</div>
 			<div class="card-buttons">
 				<button class="button button-primary button-add-cart" id="${id}">
 					<span class="button-card-text">В корзину</span>
