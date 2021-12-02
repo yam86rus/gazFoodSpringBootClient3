@@ -1,12 +1,12 @@
 'use strict';
 
-const urlCafeterias = 'http://127.0.0.1:8077/api/cafeterias';
-const urlDishes = 'http://127.0.0.1:8077/api/trololo/';
-const urlOrders = 'http://127.0.0.1:8077/api/orders';
+// const urlCafeterias = 'http://127.0.0.1:8077/api/cafeterias';
+// const urlDishes = 'http://127.0.0.1:8077/api/trololo/';
+// const urlOrders = 'http://127.0.0.1:8077/api/orders';
 
-// const urlCafeterias = 'http://193.222.191.190:8077/api/cafeterias';
-// const urlDishes = 'http://193.222.191.190:8077/api/trololo/';
-// const urlOrders = 'http://193.222.191.190:8077/api/orders';
+const urlCafeterias = 'http://193.222.191.190:8077/api/cafeterias';
+const urlDishes = 'http://193.222.191.190:8077/api/trololo/';
+const urlOrders = 'http://193.222.191.190:8077/api/orders';
 
 const cartButton = document.querySelector("#cart-button"),
     modal = document.querySelector(".modal"),
