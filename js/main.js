@@ -30,6 +30,7 @@ const cartButton = document.querySelector("#cart-button"),
     logo = document.querySelector(".logo"),
     cardsMenu = document.querySelector(".cards-menu"),
     restaurantTitle = document.querySelector(".restaurant-title"),
+    restaurantTitlePhone = document.querySelector(".restaurant-title-phone"),
     rating = document.querySelector(".rating"),
     minPrice = document.querySelector(".price"),
     category = document.querySelector(".category"),
@@ -64,8 +65,9 @@ const getData = async function (url) {
 
 const validName = function (str) {
     // const nameReg = /^[а-яА-Я][a-zA-z0-9-_\.]{1,20}$/;
-    const nameReg = /^[а-яА-я][а-яА-я0-9-_\.]{1,20}$/;
-    return nameReg.test(str);
+    const nameReg = /^[а-яА-я]{1,100}/;
+    // return nameReg.test(str);
+    return true;
 };
 
 
@@ -245,7 +247,8 @@ function openGoods(event) {
 
             returnRestaurants();
 
-            restaurantTitle.textContent = name;
+            restaurantTitle.textContent = `${name}`;
+            restaurantTitlePhone.textContent = `тел: ${kitchen}`
             rating.textContent = stars;
             minPrice.textContent = `От ${price} Р`;
             category.textContent = "";
@@ -492,14 +495,21 @@ buttonOrder.addEventListener("click", function () {
     console.log(localStorage.getItem("allCart"));
     var data = JSON.parse(localStorage.getItem("allCart"));
     console.log(data);
+    toggleModalInfo();
+    infoCount.innerHTML = "Спасибо! <br>"
+    infoCount.innerHTML += "Ваш заказ принят"
+    closeInfo.addEventListener("click", toggleModalInfo);
+
     sendRequest('POST', urlOrders, data)
-        .then(r => infoCount.innerHTML = "Ваш заказ принят. Номер заказа " + r)
-        .catch(() => infoCount.innerHTML = "Ошибка, повторите попыту позже");
+        // .then(r => infoCount.innerHTML = "Ваш заказ принят. Номер заказа " + r)
+        // .then(r => infoCount.innerHTML = "Ваш заказ принят.")
+        // .catch(() => infoCount.innerHTML = "Ошибка, повторите попыту позже");
+
 
     localStorage.removeItem("allCart");
     buttonClearCart.click();
-    toggleModalInfo();
-    closeInfo.addEventListener("click", toggleModalInfo);
+    // toggleModalInfo();
+    // closeInfo.addEventListener("click", toggleModalInfo);
 
 
 });
