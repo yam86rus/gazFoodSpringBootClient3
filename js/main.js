@@ -195,7 +195,7 @@ function createCardRestaurant({
 <!--				<div class="rating">${stars}</div>-->
 <!--				<div class="price">От ${price} ₽</div>-->
 <!--				<div class="price">От ${price}</div>-->
-				<div class="category">тел: ${kitchen}</div>
+				<div class="category">${kitchen}</div>
 				<div class="category category__address">${address}</div>
 			</div>
 		</div>
@@ -248,7 +248,7 @@ function openGoods(event) {
             returnRestaurants();
 
             restaurantTitle.textContent = `${name}`;
-            restaurantTitlePhone.textContent = `тел: ${kitchen}`
+            restaurantTitlePhone.textContent = `${kitchen}`
             rating.textContent = stars;
             minPrice.textContent = `От ${price} Р`;
             category.textContent = "";
