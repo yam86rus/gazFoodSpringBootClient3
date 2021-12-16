@@ -1,0 +1,19 @@
+name: My-GitHubActions
+env:
+  DEPLOY_PACKAGE_NAME : "stol-zakazov-ver-${{ github.sha }}"
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git clone my repo
+      - uses: actions/checkout@v2
+      - run:  |
+          - echo "Application name: ${{ env.APPLICATION_NAME }}"
+
+      - name: List current folder
+      - run: ls -la
