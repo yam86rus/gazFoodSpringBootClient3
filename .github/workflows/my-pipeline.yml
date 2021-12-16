@@ -1,15 +1,18 @@
-name: My-GitHubActions
-env:
-  DEPLOY_PACKAGE_NAME : "stol-zakazov-ver-${{ github.sha }}"
+name: CI
 on:
+
   push:
     branches: [ main ]
 
 jobs:
+
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Git clone my repo
+
       - uses: actions/checkout@v2
-      - run: ls -la
+
+      - name: Run a one-line script
+        run: ls -la
