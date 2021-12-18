@@ -1,12 +1,12 @@
 'use strict';
 
-// const urlCafeterias = 'http://127.0.0.1:8077/api/cafeterias';
-// const urlDishes = 'http://127.0.0.1:8077/api/trololo/';
-// const urlOrders = 'http://127.0.0.1:8077/api/orders';
+const urlCafeterias = 'http://127.0.0.1:8077/api/cafeterias';
+const urlDishes = 'http://127.0.0.1:8077/api/trololo/';
+const urlOrders = 'http://127.0.0.1:8077/api/orders';
 
-const urlCafeterias = 'http://193.222.191.190:8077/api/cafeterias';
-const urlDishes = 'http://193.222.191.190:8077/api/trololo/';
-const urlOrders = 'http://193.222.191.190:8077/api/orders';
+// const urlCafeterias = 'http://193.222.191.190:8077/api/cafeterias';
+// const urlDishes = 'http://193.222.191.190:8077/api/trololo/';
+// const urlOrders = 'http://193.222.191.190:8077/api/orders';
 
 const cartButton = document.querySelector("#cart-button"),
     modal = document.querySelector(".modal"),
@@ -175,14 +175,14 @@ function checkAuth() {
 
 function createCardRestaurant({
                                   id, image, kitchen, name, price, stars,
-                                  products, address, timeOfDelivery: timeOfDelivery
+                                  products, address, phone, phone2, timeOfDelivery: timeOfDelivery
                               }) {
 
     const card = document.createElement("a");
     card.className = "card card-restaurant";
     card.products = products;
     card.id = id;
-    card.info = [name, price, stars, kitchen,address];
+    card.info = [name, price, stars, kitchen, address, phone, phone2];
 
     card.insertAdjacentHTML("beforeend", `
 		<img src="cafeterias\\${image}" alt="${name}" class="card-image"/>
@@ -192,10 +192,11 @@ function createCardRestaurant({
 <!--				<span class="card-tag tag">${timeOfDelivery} мин</span>-->
 			</div>
 			<div class="card-info">
-<!--				<div class="rating">${stars}</div>-->
-<!--				<div class="price">От ${price} ₽</div>-->
-<!--				<div class="price">От ${price}</div>-->
-				<div class="category">${kitchen}</div>
+<!--  телефон 1 -->
+				<div class="category">${phone}</div>
+<!-- телефон 2 -->
+				<div class="category">${phone2}</div>
+<!-- адресс -->
 				<div class="category category__address">${address}</div>
 			</div>
 		</div>
@@ -204,7 +205,7 @@ function createCardRestaurant({
 }
 
 
-function createCardGood({description, image, name, price, id, cafeteriaId,weight}) {
+function createCardGood({description, image, name, price, id, cafeteriaId, weight}) {
     const card = document.createElement("div");
     card.className = "card";
 
@@ -256,9 +257,12 @@ function openGoods(event) {
             // getData(`./db/${restaurant.id}`).then(function(data) {
             // sendRequest('GET',urlDishes+`${restaurant.id}`)
             // getData(sendRequest('GET','http://localhost:8077/api/trololo/1'+`${restaurant.id}`)).then(function(data) {
-            getData(urlDishes + `${restaurant.id}`).then(function (data) {
-                data.forEach(createCardGood);
-            });
+            getData(urlDishes + `${restaurant.id}`)
+                .then(function (data) {
+                    console.log(data)
+                    // сортировка по тип категории
+                    data.forEach(createCardGood);
+                });
         }
 
     } else {
@@ -419,9 +423,15 @@ function changeCount(event) {
 
 
 function init() {
-    getData(sendRequest('GET', urlCafeterias).then(function (data) {
-        data.forEach(createCardRestaurant);
-    }));
+    getData(sendRequest('GET', urlCafeterias)
+        .then(function (data) {
+// сортировка по названию столовой
+            data.sort(function sortfunction(o1, o2) {
+                if (o1.name < o2.name) return -1;
+
+            })
+            data.forEach(createCardRestaurant);
+        }));
 
     cardsRestaurants.addEventListener("click", openGoods);
 
@@ -501,9 +511,9 @@ buttonOrder.addEventListener("click", function () {
     closeInfo.addEventListener("click", toggleModalInfo);
 
     sendRequest('POST', urlOrders, data)
-        // .then(r => infoCount.innerHTML = "Ваш заказ принят. Номер заказа " + r)
-        // .then(r => infoCount.innerHTML = "Ваш заказ принят.")
-        // .catch(() => infoCount.innerHTML = "Ошибка, повторите попыту позже");
+    // .then(r => infoCount.innerHTML = "Ваш заказ принят. Номер заказа " + r)
+    // .then(r => infoCount.innerHTML = "Ваш заказ принят.")
+    // .catch(() => infoCount.innerHTML = "Ошибка, повторите попыту позже");
 
 
     localStorage.removeItem("allCart");
