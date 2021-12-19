@@ -1,11 +1,11 @@
 'use strict';
 
 const urlCafeterias = 'http://127.0.0.1:8077/api/cafeterias';
-const urlDishes = 'http://127.0.0.1:8077/api/trololo/';
+const urlDishes = 'http://127.0.0.1:8077/api/dishesToFront/';
 const urlOrders = 'http://127.0.0.1:8077/api/orders';
 
 // const urlCafeterias = 'http://193.222.191.190:8077/api/cafeterias';
-// const urlDishes = 'http://193.222.191.190:8077/api/trololo/';
+// const urlDishes = 'http://193.222.191.190:8077/api/dishesToFront/';
 // const urlOrders = 'http://193.222.191.190:8077/api/orders';
 
 const cartButton = document.querySelector("#cart-button"),
@@ -28,7 +28,12 @@ const cartButton = document.querySelector("#cart-button"),
     restaurants = document.querySelector(".restaurants"),
     menu = document.querySelector(".menu"),
     logo = document.querySelector(".logo"),
+
+    // Обычный товар
     cardsMenu = document.querySelector(".cards-menu"),
+
+    // Акционный товар
+    cardsMenuPromo = document.querySelector(".cards-menu-promo"),
     restaurantTitle = document.querySelector(".restaurant-title"),
     restaurantTitlePhone = document.querySelector(".restaurant-title-phone"),
     rating = document.querySelector(".rating"),
@@ -172,7 +177,7 @@ function checkAuth() {
     }
 }
 
-
+// Создание корточек столовых
 function createCardRestaurant({
                                   id, image, kitchen, name, price, stars,
                                   products, address, phone, phone2, timeOfDelivery: timeOfDelivery
@@ -204,8 +209,39 @@ function createCardRestaurant({
     cardsRestaurants.insertAdjacentElement("beforeend", card);
 }
 
+// Создание карточек акционного товара
+function createCardGoodPromo({description, image, name, price, id, cafeteriaId, weight, promotion}) {
+    const card = document.createElement("div");
+    card.className = "cardPromo";
 
-function createCardGood({description, image, name, price, id, cafeteriaId, weight}) {
+    card.insertAdjacentHTML("beforeend", `
+		<img src="dishes\\${image}" alt="${name}" class="card-image"/>
+		<div class="card-text">
+			<div class="card-heading">
+				<h3 class="card-title card-title-reg">${name}</h3>
+			</div>
+			<div class="card-info">
+				<div class="ingredients">${description}</div>
+				<div style="display: none" class="card-cafeteriaId">${cafeteriaId}</div>
+			</div>
+				<div class="ingredients">Вес: ${weight} гр.</div>
+				<div class="ingredients">Промо? ${promotion}</div>
+			<div class="card-buttons">
+				<button class="button button-primary button-add-cart" id="${id}">
+					<span class="button-card-text">В корзину</span>
+					<span class="button-cart-svg"></span>
+				</button>
+				<strong class="card-price card-price-bold">${price} ₽</strong>
+<!--				<strong class="card-price card-price-bold">${price}</strong>-->
+			</div>
+		</div>
+	`);
+
+    cardsMenuPromo.insertAdjacentElement("beforeend", card);
+}
+
+// Создание карточек обычного товара
+function createCardGood({description, image, name, price, id, cafeteriaId, weight, promotion}) {
     const card = document.createElement("div");
     card.className = "card";
 
@@ -220,6 +256,7 @@ function createCardGood({description, image, name, price, id, cafeteriaId, weigh
 				<div style="display: none" class="card-cafeteriaId">${cafeteriaId}</div>
 			</div>
 				<div class="ingredients">Вес: ${weight} гр.</div>
+				<div class="ingredients">Промо? ${promotion}</div>
 			<div class="card-buttons">
 				<button class="button button-primary button-add-cart" id="${id}">
 					<span class="button-card-text">В корзину</span>
@@ -233,7 +270,6 @@ function createCardGood({description, image, name, price, id, cafeteriaId, weigh
 
     cardsMenu.insertAdjacentElement("beforeend", card);
 }
-
 
 function openGoods(event) {
     const target = event.target;
@@ -259,9 +295,22 @@ function openGoods(event) {
             // getData(sendRequest('GET','http://localhost:8077/api/trololo/1'+`${restaurant.id}`)).then(function(data) {
             getData(urlDishes + `${restaurant.id}`)
                 .then(function (data) {
-                    console.log(data)
-                    // сортировка по тип категории
-                    data.forEach(createCardGood);
+                    // отфильтровали по признаку "Промо" товара
+
+                    var promoDishes = data.filter(function (val){
+                        return val.promotion===true;
+                    })
+
+                    var withoutPromoDishes = data.filter(function (val){
+                        return val.promotion === false;
+                    })
+                    //создаем карточки для блюд с акцией
+                    promoDishes.forEach(createCardGoodPromo);
+
+                    // создаем карточки для блюд без акции
+                    withoutPromoDishes.forEach(createCardGood);
+
+
                 });
         }
 
@@ -270,7 +319,6 @@ function openGoods(event) {
     }
 
 }
-
 
 function searchAllGoods(event) {
     if (event.keyCode == 13) {
@@ -324,7 +372,6 @@ function searchAllGoods(event) {
     }
 }
 
-
 function addToCart(event) {
     const target = event.target;
 
@@ -371,7 +418,6 @@ function getTotalCount() {
     return totalCount;
 }
 
-
 function renderCart() {
     modalBody.textContent = "";
 
@@ -400,7 +446,6 @@ function renderCart() {
     basketCount.innerHTML = getTotalCount();
 }
 
-
 function changeCount(event) {
     const target = event.target;
 
@@ -420,7 +465,6 @@ function changeCount(event) {
     }
     saveCart();
 }
-
 
 function init() {
     getData(sendRequest('GET', urlCafeterias)
@@ -487,7 +531,6 @@ function sendRequest(method, url, body = null) {
         xhr.send(JSON.stringify(body))
     })
 }
-
 
 const requestBody = {
     "dishesId": 1,

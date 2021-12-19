@@ -277,6 +277,16 @@ button {
     text-decoration: none;
 
 }
+.cardPromo {
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 7px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    flex-basis: 31%;
+    text-decoration: none;
+
+}
 
 .card-restaurant {
     cursor: pointer;
