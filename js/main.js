@@ -101,6 +101,7 @@ function returnMain() {
 
 function returnRestaurants() {
     cardsMenu.textContent = "";
+    cardsMenuPromo.textContent = "";
     containerPromo.classList.add("hide");
     restaurants.classList.add("hide");
     menu.classList.remove("hide");
@@ -210,11 +211,17 @@ function createCardRestaurant({
 }
 
 // Создание карточек акционного товара
-function createCardGoodPromo({description, image, name, price, id, cafeteriaId, weight, promotion}) {
+function createCardGoodPromo({description, image, name, price, id, cafeteriaId, weight, promotion, promotionFile}) {
     const card = document.createElement("div");
-    card.className = "cardPromo";
+    card.className = "card";
 
-    card.insertAdjacentHTML("beforeend", `
+    console.log(promotionFile);
+    console.log(promotionFile==='');
+    console.log(promotionFile===null);
+
+    // Какой ужас! Простите, мне очень стыдно.
+    if (promotionFile!='' & promotionFile!=null) {
+        card.insertAdjacentHTML("beforeend", `
 		<img src="dishes\\${image}" alt="${name}" class="card-image"/>
 		<div class="card-text">
 			<div class="card-heading">
@@ -225,7 +232,12 @@ function createCardGoodPromo({description, image, name, price, id, cafeteriaId, 
 				<div style="display: none" class="card-cafeteriaId">${cafeteriaId}</div>
 			</div>
 				<div class="ingredients">Вес: ${weight} гр.</div>
-				<div class="ingredients">Промо? ${promotion}</div>
+				
+				<div>
+				    <a href="/promo/${promotionFile}" download><img class="img-download" src="../img/icon/file.png" alt="Скачать">Скачать</a>
+				
+				</div>
+				
 			<div class="card-buttons">
 				<button class="button button-primary button-add-cart" id="${id}">
 					<span class="button-card-text">В корзину</span>
@@ -237,7 +249,32 @@ function createCardGoodPromo({description, image, name, price, id, cafeteriaId, 
 		</div>
 	`);
 
-    cardsMenuPromo.insertAdjacentElement("beforeend", card);
+        cardsMenuPromo.insertAdjacentElement("beforeend", card);
+    } else {
+        card.insertAdjacentHTML("beforeend", `
+		<img src="dishes\\${image}" alt="${name}" class="card-image"/>
+		<div class="card-text">
+			<div class="card-heading">
+				<h3 class="card-title card-title-reg">${name}</h3>
+			</div>
+			<div class="card-info">
+				<div class="ingredients">${description}</div>
+				<div style="display: none" class="card-cafeteriaId">${cafeteriaId}</div>
+			</div>
+				<div class="ingredients">Вес: ${weight} гр.</div>
+			<div class="card-buttons">
+				<button class="button button-primary button-add-cart" id="${id}">
+					<span class="button-card-text">В корзину</span>
+					<span class="button-cart-svg"></span>
+				</button>
+				<strong class="card-price card-price-bold">${price} ₽</strong>
+<!--				<strong class="card-price card-price-bold">${price}</strong>-->
+			</div>
+		</div>
+	`);
+
+        cardsMenuPromo.insertAdjacentElement("beforeend", card);
+    }
 }
 
 // Создание карточек обычного товара
@@ -256,7 +293,7 @@ function createCardGood({description, image, name, price, id, cafeteriaId, weigh
 				<div style="display: none" class="card-cafeteriaId">${cafeteriaId}</div>
 			</div>
 				<div class="ingredients">Вес: ${weight} гр.</div>
-				<div class="ingredients">Промо? ${promotion}</div>
+
 			<div class="card-buttons">
 				<button class="button button-primary button-add-cart" id="${id}">
 					<span class="button-card-text">В корзину</span>
@@ -285,7 +322,7 @@ function openGoods(event) {
             returnRestaurants();
 
             restaurantTitle.textContent = `${name}`;
-            restaurantTitlePhone.textContent = `${kitchen}`
+            // restaurantTitlePhone.textContent = `${phone}`
             rating.textContent = stars;
             minPrice.textContent = `От ${price} Р`;
             category.textContent = "";
@@ -297,11 +334,11 @@ function openGoods(event) {
                 .then(function (data) {
                     // отфильтровали по признаку "Промо" товара
 
-                    var promoDishes = data.filter(function (val){
-                        return val.promotion===true;
+                    var promoDishes = data.filter(function (val) {
+                        return val.promotion === true;
                     })
 
-                    var withoutPromoDishes = data.filter(function (val){
+                    var withoutPromoDishes = data.filter(function (val) {
                         return val.promotion === false;
                     })
                     //создаем карточки для блюд с акцией
@@ -482,6 +519,7 @@ function init() {
     logo.addEventListener("click", returnMain);
 
     cardsMenu.addEventListener("click", addToCart);
+    cardsMenuPromo.addEventListener("click", addToCart);
 
     cartButton.addEventListener("click", function () {
         renderCart();
