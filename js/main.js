@@ -3,10 +3,14 @@
 const urlCafeterias = 'http://127.0.0.1:8077/api/cafeterias';
 const urlDishes = 'http://127.0.0.1:8077/api/dishesToFront/';
 const urlOrders = 'http://127.0.0.1:8077/api/orders';
+const urlOrdersByPhoneNumber = 'http://127.0.0.1:8077/api/ordersByPhoneNumber/';
+const urlOrdersGroupByPhoneNumber = 'http://127.0.0.1:8077/api/ordersGroupByPhoneNumber/';
 
 // const urlCafeterias = 'http://193.222.191.190:8077/api/cafeterias';
 // const urlDishes = 'http://193.222.191.190:8077/api/dishesToFront/';
 // const urlOrders = 'http://193.222.191.190:8077/api/orders';
+// const urlOrdersByPhoneNumber = 'http://193.222.191.190:8077/api/ordersByPhoneNumber/';
+// const urlOrdersGroupByPhoneNumber = 'http://193.222.191.190:8077/api/ordersGroupByPhoneNumber/';
 
 const cartButton = document.querySelector("#cart-button"),
     modal = document.querySelector(".modal"),
