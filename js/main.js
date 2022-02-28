@@ -54,6 +54,19 @@ const cartButton = document.querySelector("#cart-button"),
 let login = localStorage.getItem("logName");
 let phone = localStorage.getItem("logPhone");
 
+// Установка текущей даты
+var date = new Date();
+var day = date.getDate();
+var month = date.getMonth() + 1;
+var year = date.getFullYear();
+if (month < 10) month = "0" + month;
+if (day < 10) day = "0" + day;
+var today = year + "-" + month + "-" + day;
+document.getElementById('theDate').value = today;
+// localStorage.setItem("orderDate", today);
+// var orderDate = localStorage.getItem("orderDate");
+
+
 const cart = JSON.parse(localStorage.getItem("allCart")) || [];
 
 const saveCart = function () {
@@ -413,6 +426,7 @@ function searchAllGoods(event) {
     }
 }
 
+
 function addToCart(event) {
     const target = event.target;
 
@@ -427,6 +441,7 @@ function addToCart(event) {
         const cafeteriaName = restaurantTitle.innerHTML;
         const userName = document.querySelector(".user-name").textContent;
         const userPhone = localStorage.getItem("logPhone");
+        const orderDate = document.getElementById('theDate').value;
 
 
         const food = cart.find(function (item) {
@@ -436,6 +451,7 @@ function addToCart(event) {
         if (food) {
             food.count += 1;
         } else {
+
             cart.push({
                 id: id,
                 title: title,
@@ -444,7 +460,8 @@ function addToCart(event) {
                 count: 1,
                 cafeteriaName: cafeteriaName,
                 userName: userName,
-                userPhone: userPhone
+                userPhone: userPhone,
+                orderDate: orderDate
             });
         }
     }
@@ -586,6 +603,7 @@ const requestBody = {
 
 // По нажатию кнопки "Оформить заказ"
 buttonOrder.addEventListener("click", function () {
+    // localStorage.setItem("orderDate", document.getElementById('theDate').value);
     close.click();
     console.log(localStorage.getItem("allCart"));
     var data = JSON.parse(localStorage.getItem("allCart"));
